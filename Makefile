@@ -25,7 +25,7 @@ boot.o: boot/boot.asm
 common.o: libs/common.c include/common.h include/types.h
 	$(CC) $(C_FLAGS)  $<  -o $@ 
 
-console.o: libs/console.c include/console.h include/common.h
+console.o: drivers/console.c include/console.h include/common.h
 	$(CC) $(C_FLAGS)  $<  -o $@ 
 
 .PHONY:clean
