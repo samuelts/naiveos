@@ -36,3 +36,9 @@
 
 # Qemu trace files
 trace-*
+
+# Python Virtual Environment Folder
+.venv/
+
+# vscode 目录
+.vscode/

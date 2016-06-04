@@ -13,20 +13,29 @@ C_FLAGS = -c -Wall -m32 -ggdb -gstabs+ -nostdinc -fno-builtin -fno-stack-protect
 LD_FLAGS = -T scripts/kernel.ld -m elf_i386 -nostdlib
 ASM_FLAGS = -f elf -g -F stabs
 
-kernel.bin: entry.o boot.o common.o console.o
+kernel.bin: kmain.o boot.o common.o console.o printk.o string.o debug.o
 	$(LD) $(LD_FLAGS)  $^  -o $@
 
-entry.o: init/entry.c include/types.h
+kmain.o: init/kmain.c include/types.h
 	$(CC) $(C_FLAGS)  $<  -o $@ 
+
+printk.o: kernel/printk.c
+	$(CC) $(C_FLAGS)  $<  -o $@
+
+string.o: lib/string.c
+	$(CC) $(C_FLAGS)  $<  -o $@
 
 boot.o: boot/boot.asm
 	$(ASM) $(ASM_FLAGS)  $<  -o $@
 
-common.o: libs/common.c include/common.h include/types.h
+common.o: lib/common.c include/common.h include/types.h
 	$(CC) $(C_FLAGS)  $<  -o $@ 
 
-console.o: drivers/console.c include/console.h include/common.h
+console.o: arch/i386/driver/console.c include/console.h include/common.h
 	$(CC) $(C_FLAGS)  $<  -o $@ 
+
+debug.o: arch/i386/debug/debug.c
+	$(CC) $(C_FLAGS)  $<  -o $@
 
 .PHONY:clean
 clean:

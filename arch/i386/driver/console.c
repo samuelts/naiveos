@@ -121,12 +121,12 @@ void console_putc_color(char c, real_color_t back, real_color_t fore)
 	move_cursor();
 }
 
-void console_write(char *cstr)
+void console_write(const char *cstr)
 {
 	console_write_color(cstr, rc_black, rc_white);
 }
 
-void console_write_color(char *cstr, real_color_t back, real_color_t fore)
+void console_write_color(const char *cstr, real_color_t back, real_color_t fore)
 {
 	while (*cstr)
 		console_putc_color(*cstr++, back, fore);
