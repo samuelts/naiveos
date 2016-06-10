@@ -13,7 +13,7 @@ C_FLAGS = -c -Wall -m32 -ggdb -gstabs+ -nostdinc -fno-builtin -fno-stack-protect
 LD_FLAGS = -T scripts/kernel.ld -m elf_i386 -nostdlib
 ASM_FLAGS = -f elf -g -F stabs
 
-kernel.bin: kmain.o boot.o common.o console.o printk.o string.o debug.o gdt_c.o gdt_asm.o idt_c.o idt_asm.o
+kernel.bin: kmain.o boot.o common.o console.o printk.o string.o debug.o gdt_c.o gdt_asm.o idt_c.o idt_asm.o timer.o
 	$(LD) $(LD_FLAGS)  $^  -o $@
 
 kmain.o: arch/i386/init/kmain.c
@@ -30,6 +30,9 @@ idt_c.o: arch/i386/mm/idt.c
 
 idt_asm.o: arch/i386/mm/idt.asm
 	$(ASM) $(ASM_FLAGS)  $<  -o $@
+
+timer.o: arch/i386/driver/timer.c
+	$(CC) $(C_FLAGS) -Iarch/i386/include  $<  -o $@
 
 printk.o: kernel/printk.c
 	$(CC) $(C_FLAGS)  $<  -o $@
